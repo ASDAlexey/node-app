@@ -48,6 +48,23 @@ const Books = sequelize.define('books', {
         },
     },
     read: Sequelize.BOOLEAN,
+}, {
+    hooks: {
+        beforeValidate: (res) => {
+            console.log('beforeValidate' + res.dataValues.title);
+            res.dataValues.title = res.dataValues.title + 'dddd';
+        },
+        afterValidate: (user) => {
+            console.log('afterValidate');
+            // user.pasword= bcrypt.hasSync(user.password,8);
+        },
+        beforeCreate: () => {
+            console.log('beforeCreate');
+        },
+        afterCreate: () => {
+            console.log('afterCreate');
+        },
+    },
 });
 
 const router = (nav) => {
