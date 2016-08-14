@@ -23,6 +23,7 @@ const Books = sequelize.define('books', {
     title: {
         type: Sequelize.STRING,
         unique: true,
+        allowNull: false,
         defaultValue: 'Default title',
         validate: {
             len: {
@@ -33,7 +34,7 @@ const Books = sequelize.define('books', {
     },
     genre: {
         type: Sequelize.STRING,
-        allowNull: false,
+        defaultValue: 'Default genre',
     },
     author: {
         type: Sequelize.STRING,
@@ -76,9 +77,10 @@ const router = (nav) => {
             // add books to table
             Books.create({
                 title: 'asdalexey',
-                genre: '',
                 author: 'Aasd',
                 read: false,
+            }, {
+                fields: ['title', 'genre'],
             }).then((data) => {
                 // Books.findById(1).then((foundedObj) => {
                 //     // console.log(foundedObj.dataValues);
