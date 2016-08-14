@@ -4,6 +4,7 @@ const port = process.env.PORT || 5000;
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
 const nav = [
     {
@@ -16,9 +17,10 @@ const nav = [
     },
 ];
 const bookRouter = require('./src/routes/bookRoutes')(nav);
+const adminRouter = require('./src/routes/adminRoutes')(nav);
 
-app.use(express.static('public'));
 app.use('/books', bookRouter);
+app.use('/admin', adminRouter);
 
 app.get('/', (req, res) => {
     res.render('index', {
