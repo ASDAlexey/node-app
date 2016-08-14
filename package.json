@@ -13,7 +13,9 @@
     "ejs": "^2.5.1",
     "express": "^4.14.0",
     "jade": "^1.11.0",
-    "mongodb": "^2.2.5"
+    "mongodb": "^2.2.5",
+    "mysql": "^2.11.1",
+    "sequelize": "^3.24.0"
   },
   "devDependencies": {
     "eslint": "^3.2.0",
