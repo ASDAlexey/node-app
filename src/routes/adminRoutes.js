@@ -75,22 +75,44 @@ const router = (nav) => {
             logging: console.log,
         }).then(() => {
             // add books to table
-            Books.create({
-                title: 'asdalexey',
-                author: 'Aasd',
-                read: false,
-            }, {
-                fields: ['title', 'genre'],
-            }).then((data) => {
-                // Books.findById(1).then((foundedObj) => {
-                //     // console.log(foundedObj.dataValues);
-                //
-                // });
-                res.send(data.dataValues);
+            // Books.create({
+            //  title: 'asdalexey',
+            //  author: 'Aasd',
+            //  read: false,
+            //  }, {
+            //  fields: ['title', 'genre'],
+            //  }).then((data) => {
+            //  // Books.findById(1).then((foundedObj) => {
+            //  //     // console.log(foundedObj.dataValues);
+            //  //
+            //  // });
+            //  res.send(data.dataValues);
+            //  }).catch((err) => {
+            //  res.send(err);
+            //  });
+            Books.bulkCreate(
+                [
+                    {
+                        title: 'asdalexey',
+                        author: 'Aasd',
+                        read: false,
+                    },
+                    {
+                        title: 'asdalexey2',
+                        author: 'Aasd2',
+                        read: false,
+                    },
+                ],
+                {
+                    validate: true,
+                    ignoreDuplicates: true,
+                }
+            ).then((data) => {
+                console.log(data);
+                res.send(data);
             }).catch((err) => {
                 res.send(err);
             });
-
         });
     });
     return adminRouter;
