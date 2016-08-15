@@ -108,7 +108,6 @@ const router = (nav) => {
                     ignoreDuplicates: true,
                 }
             ).then((data) => {
-                console.log(data);
                 res.send(data);
             }).catch((err) => {
                 res.send(err);

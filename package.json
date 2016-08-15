@@ -10,11 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.1",
     "express": "^4.14.0",
+    "express-session": "^1.14.0",
     "jade": "^1.11.0",
     "mongodb": "^2.2.5",
     "mysql": "^2.11.1",
+    "passport": "^0.3.2",
     "sequelize": "^3.24.0"
   },
   "devDependencies": {
