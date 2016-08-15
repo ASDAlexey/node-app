@@ -1,12 +1,10 @@
 {
-  "name": "node-app",
-  "description": "",
-  "main": "app.js",
+  "name": "library",
+  "version": "0.0.0",
   "authors": [
-    "ASDAlexey <asdalexey@yandex.ru>"
+    "Jonathan Mills <jonathanfmills@gmail.com>"
   ],
-  "license": "ISC",
-  "homepage": "",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -15,25 +13,23 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "font-awesome": "^4.6.3"
+    "bootstrap": "~3.3.5",
+    "font-awesome": "~4.4.0"
   },
-  "overrides": {
-    "jquery": {
-      "main": [
-        "dist/jquery.min.js"
-      ]
-    },
-    "bootstrap": {
-      "main": [
-        "dist/js/bootstrap.min.js",
-        "dist/css/bootstrap.min.css"
-      ]
-    },
-    "font-awesome": {
-      "main": [
-        "css/font-awesome.min.css"
-      ]
+    "overrides": {
+        "bootstrap": {
+            "main": [
+                "dist/js/bootstrap.js",
+                "dist/css/bootstrap.css",
+                "less/bootstrap.less"
+            ]
+        },
+        "font-awesome": {
+            "main": [
+                "less/font-awesome.less",
+                "css/font-awesome.min.css",
+                "scss/font-awesome.scss"
+            ]
+        }
     }
-  }
 }

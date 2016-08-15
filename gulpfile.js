@@ -1,39 +1,57 @@
-const gulp = require('gulp');
-const wiredep = require('wiredep').stream;
-const inject = require('gulp-inject');
-const bowerJson = require('./bower.json');
-const nodemon = require('gulp-nodemon');
+var gulp = require('gulp');
+var jshint = require('gulp-jshint');
+var jscs = require('gulp-jscs');
+var nodemon = require('gulp-nodemon');
 
-const jsFiles = ['*.js', 'src/**/*.js'];
+var jsFiles = ['*.js', 'src/**/*.js'];
 
-gulp.task('inject', () => {
-    const injectSrc = gulp.src([
-        './public/css/*.css',
-        './public/js/*.js',
-    ], { read: false });
-    const injectOptions = {
-        ignorePath: '/public',
+gulp.task('style', function () {
+    return gulp.src(jsFiles)
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish', {
+            verbose: true
+        }))
+        .pipe(jscs());
+});
+
+gulp.task('inject', function () {
+    var wiredep = require('wiredep').stream;
+    var inject = require('gulp-inject');
+
+    var injectSrc = gulp.src(['./public/css/*.css',
+                              './public/js/*.js'], {
+        read: false
+    });
+
+    var injectOptions = {
+        ignorePath: '/public'
     };
-    const options = {
-        bowerJson,
+
+    var options = {
+        bowerJson: require('./bower.json'),
         directory: './public/lib',
-        ignorePath: '../../public',
+        ignorePath: '../../public'
     };
-    return gulp
-        .src('./src/views/*.jade')
+
+    return gulp.src('./src/views/*.jade')
         .pipe(wiredep(options))
         .pipe(inject(injectSrc, injectOptions))
         .pipe(gulp.dest('./src/views'));
+
 });
-gulp.task('serve', ['inject'], () => {
-    const options = {
+
+gulp.task('serve', ['style', 'inject'], function () {
+    var options = {
         script: 'app.js',
         delayTime: 1,
         env: {
-            port: 3000,
+            'PORT': 3000
         },
-        watch: jsFiles,
+        watch: jsFiles
     };
+
     return nodemon(options)
-        .on('restart', () => console.log('Restarting...'));
+        .on('restart', function (ev) {
+            console.log('Restarting....');
+        });
 });

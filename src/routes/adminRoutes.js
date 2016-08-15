@@ -1,119 +1,81 @@
-const express = require('express');
-const adminRouter = express.Router();
-const mysql = require('mysql');
-const Sequelize = require('sequelize');
-// connection string
-const sequelize = new Sequelize('node-app', 'root', '121314', {
-    host: 'localhost',
-    dialect: 'mysql',
-    pool: {
-        max: 5,
-        min: 0,
-        idle: 10000,
-    },
-});
+var express = require('express');
+var adminRouter = express.Router();
+var mongodb = require('mongodb').MongoClient;
 
-// model schema
-const Books = sequelize.define('books', {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    title: {
-        type: Sequelize.STRING,
-        unique: true,
-        allowNull: false,
-        defaultValue: 'Default title',
-        validate: {
-            len: {
-                args: [3, 150],
-                msg: 'Lenght must be morwe then 10 and less then 150 symbols',
-            },
+var books = [
+        {
+            title: 'War and Peace',
+            genre: 'Historical Fiction',
+            author: 'Lev Nikolayevich Tolstoy',
+            bookId: 656,
+            read: false
         },
-    },
-    genre: {
-        type: Sequelize.STRING,
-        defaultValue: 'Default genre',
-    },
-    author: {
-        type: Sequelize.STRING,
-        validate: {
-            startWithUpper(authorVal){
-                const first = authorVal.charAt(0);
-                const startWithUpper = first === authorVal[0].toUpperCase();
-                if (!startWithUpper) {
-                    throw new Error('First letter must be in uppercase');
-                }
-            },
+        {
+            title: 'Les Misérables',
+            genre: 'Historical Fiction',
+            author: 'Victor Hugo',
+            bookId: 24280,
+            read: false
         },
-    },
-    read: Sequelize.BOOLEAN,
-}, {
-    hooks: {
-        beforeValidate: (res) => {
-            console.log('beforeValidate' + res.dataValues.title);
-            res.dataValues.title = res.dataValues.title + 'dddd';
+        {
+            title: 'The Time Machine',
+            genre: 'Science Fiction',
+            author: 'H. G. Wells',
+            read: false
         },
-        afterValidate: (user) => {
-            console.log('afterValidate');
-            // user.pasword= bcrypt.hasSync(user.password,8);
+        {
+            title: 'A Journey into the Center of the Earth',
+            genre: 'Science Fiction',
+            author: 'Jules Verne',
+            read: false
         },
-        beforeCreate: () => {
-            console.log('beforeCreate');
+        {
+            title: 'The Dark World',
+            genre: 'Fantasy',
+            author: 'Henry Kuttner',
+            read: false
         },
-        afterCreate: () => {
-            console.log('afterCreate');
+        {
+            title: 'The Wind in the Willows',
+            genre: 'Fantasy',
+            author: 'Kenneth Grahame',
+            read: false
         },
-    },
-});
+        {
+            title: 'Life On The Mississippi',
+            genre: 'History',
+            author: 'Mark Twain',
+            read: false
+        },
+        {
+            title: 'Childhood',
+            genre: 'Biography',
+            author: 'Lev Nikolayevich Tolstoy',
+            read: false
+        }
+    ];
 
-const router = (nav) => {
-    adminRouter.get('/addBooks', (req, res) => {
-        // create DB table if one does not exist already
-        sequelize.sync({
-            logging: console.log,
-        }).then(() => {
-            // add books to table
-            // Books.create({
-            //  title: 'asdalexey',
-            //  author: 'Aasd',
-            //  read: false,
-            //  }, {
-            //  fields: ['title', 'genre'],
-            //  }).then((data) => {
-            //  // Books.findById(1).then((foundedObj) => {
-            //  //     // console.log(foundedObj.dataValues);
-            //  //
-            //  // });
-            //  res.send(data.dataValues);
-            //  }).catch((err) => {
-            //  res.send(err);
-            //  });
-            Books.bulkCreate(
-                [
-                    {
-                        title: 'asdalexey',
-                        author: 'Aasd',
-                        read: false,
-                    },
-                    {
-                        title: 'asdalexey2',
-                        author: 'Aasd2',
-                        read: false,
-                    },
-                ],
-                {
-                    validate: true,
-                    ignoreDuplicates: true,
-                }
-            ).then((data) => {
-                res.send(data);
-            }).catch((err) => {
-                res.send(err);
+var router = function (nav) {
+
+    adminRouter.route('/addBooks')
+        .get(function (req, res) {
+            var url =
+                'mongodb://localhost:27017/libraryApp';
+
+            mongodb.connect(url, function (err, db) {
+                var collection = db.collection('books');
+                collection.insertMany(books,
+                    function (err, results) {
+                        res.send(results);
+                        db.close();
+                    }
+                );
+
             });
+
+            //res.send('inserting books');
         });
-    });
+
     return adminRouter;
 };
 

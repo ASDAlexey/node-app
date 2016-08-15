@@ -1,44 +1,20 @@
-const express = require('express');
-const bookRouter = express.Router();
-const router = (nav) => {
-    const books = [
-        {
-            title: 'AAAA1',
-            genre: 'SSSS',
-            author: 'ASDA',
-            read: false,
-        },
-        {
-            title: 'AAAA2',
-            author: 'ASDA',
-            read: false,
-        },
-        {
-            title: 'AAAA3',
-            genre: 'SSSS',
-            author: 'ASDA',
-            read: false,
-        },
-    ];
+var express = require('express');
+var bookRouter = express.Router();
+var mongodb = require('mongodb').MongoClient;
+var objectId = require('mongodb').ObjectID;
 
-    bookRouter.get('/', (req, res) => {
-        res.render('bookListView', {
-            title: 'Books',
-            nav,
-            books,
-        });
-    });
+var router = function (nav) {
+    var bookService =
+        require('../services/goodreadsService')();
+    var bookController =
+        require('../controllers/bookController')(bookService, nav);
+    bookRouter.use(bookController.middleware);
+    bookRouter.route('/')
+        .get(bookController.getIndex);
 
-    bookRouter.get('/:id', (req, res) => {
-        const id = req.params.id;
-        res.render('bookView', {
-            title: 'Books',
-            nav,
-            book: books[id],
-        });
-    });
+    bookRouter.route('/:id')
+        .get(bookController.getById);
 
     return bookRouter;
 };
-
 module.exports = router;
