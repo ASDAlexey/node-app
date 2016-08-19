@@ -1,10 +1,18 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
+const bodyParser = require('body-parser');
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+
+// parse application/json
+app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(multer());
+
 
 const nav = [
     {

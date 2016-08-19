@@ -2,6 +2,9 @@ const express = require('express');
 const adminRouter = express.Router();
 const mysql = require('mysql');
 const Sequelize = require('sequelize');
+const multiparty = require('multiparty');
+const multer = require('multer');
+var upload = multer()
 // connection string
 const sequelize = new Sequelize('node-app', 'root', '121314', {
     host: 'localhost',
@@ -69,6 +72,28 @@ const Books = sequelize.define('books', {
 });
 
 const router = (nav) => {
+    adminRouter.get('/', (req, res) => {
+        res.render('admin');
+    });
+    adminRouter.post('/', upload.array(), (req, res) => {
+        res.json(req.body);
+
+        // var form = new multiparty.Form();
+        // form.parse(req, function(err, fields, files) {
+        //     console.log(files);
+        // });
+
+    });
+    // adminRouter.post('/', (req, res) => {
+    //     res.json(req.body);
+    //
+    //     // var form = new multiparty.Form();
+    //     // form.parse(req, function(err, fields, files) {
+    //     //     console.log(files);
+    //     // });
+    //
+    // });
+
     adminRouter.get('/addBooks', (req, res) => {
         // create DB table if one does not exist already
         sequelize.sync({
