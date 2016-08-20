@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 
 app.set('views', './src/views');
@@ -24,6 +24,7 @@ const nav = [
         text: 'Authors',
     },
 ];
+
 const bookRouter = require('./src/routes/bookRoutes')(nav);
 const adminRouter = require('./src/routes/adminRoutes')(nav);
 
