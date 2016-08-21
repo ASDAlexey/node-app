@@ -16,7 +16,6 @@ const sequelize = new Sequelize('node-app', 'root', '121314', {
     },
 });
 
-
 // model schema
 const Books = sequelize.define('books', {
     id: {
