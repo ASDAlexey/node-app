@@ -2,7 +2,7 @@ const express = require('express');
 const adminRouter = express.Router();
 const mysql = require('mysql');
 const Sequelize = require('sequelize');
-const multiparty = require('multiparty');
+// const multiparty = require('multiparty');
 const multer = require('multer');
 var upload = multer()
 // connection string

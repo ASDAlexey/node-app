@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
+import bodyParser from 'body-parser';
 const app = express();
 const port = process.env.PORT || 8080;
-const bodyParser = require('body-parser');
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
