@@ -7,19 +7,13 @@ var nodeModules = {};
 // without it, eslint-import-resolver-webpack fails
 // since eslint might be invoked with different cwd
 fs.readdirSync(path.resolve(__dirname, 'node_modules'))
-  .filter(x => ['.bin'].indexOf(x) === -1)
-  .forEach(mod => {
-      nodeModules[mod] = `commonjs ${mod}`;
-  });
+    .filter(x => ['.bin'].indexOf(x) === -1)
+    .forEach(mod => {
+        nodeModules[mod] = `commonjs ${mod}`;
+    });
 
-// es5 style alternative
-// fs.readdirSync(path.resolve(__dirname, 'node_modules'))
-//     .filter(function(x) {
-//         return ['.bin'].indexOf(x) === -1;
-//     })
-//     .forEach(function(mod) {
-//         nodeModules[mod] = 'commonjs ' + mod;
-//     });
+const NODE_ENV = process.env.NODE_ENV;
+const isProd = NODE_ENV === 'production';
 
 module.exports = {
     // The configuration for the server-side rendering
@@ -27,8 +21,6 @@ module.exports = {
     target: 'node',
     entry: './app.js',
     output: {
-        // path: './bin/',
-        // publicPath: 'bin/',
         filename: 'app-webpack.js'
     },
     externals: nodeModules,
@@ -36,27 +28,30 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-
-                loaders: [
-                    // 'imports?document=this',
-
-                    // 'react-hot',
-                    'babel-loader'
-                    //,'jsx-loader'
-                ]
-            },
-            { test: /\.json$/, loader: 'json-loader' },
+                loader: 'babel',
+                query: {
+                    presets: ['es2015']
+                }
+            }
         ]
     },
     plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.NoErrorsPlugin(),
+        // new webpack.NormalModuleReplacementPlugin("^(react-bootstrap-modal)$", "^(react)$")
+        // new webpack.IgnorePlugin(new RegExp("^(react-bootstrap-modal)$"))
+        // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    ]
+};
+
+if (isProd) {
+    module.exports.plugins.push(
         new webpack.optimize.UglifyJsPlugin({
             warnings: false,
             drop_console: true,
             sourceMap: false,
             mangle: true,
         })
-        // new webpack.NormalModuleReplacementPlugin("^(react-bootstrap-modal)$", "^(react)$")
-        // new webpack.IgnorePlugin(new RegExp("^(react-bootstrap-modal)$"))
-        // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-    ]
-};
+    );
+}
