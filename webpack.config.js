@@ -39,9 +39,6 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.NoErrorsPlugin(),
-        // new webpack.NormalModuleReplacementPlugin("^(react-bootstrap-modal)$", "^(react)$")
-        // new webpack.IgnorePlugin(new RegExp("^(react-bootstrap-modal)$"))
-        // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ]
 };
 
