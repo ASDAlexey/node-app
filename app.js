@@ -1,11 +1,21 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 const app = express();
 const port = process.env.PORT || 8080;
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+app.use(morgan('combined'));
+app.use(function (req, res, next) {
+    var start = Date.now();
+    res.on('finish', function () {
+        var duration = Date.now() - start;
+        console.log( `${duration}mc`);
+    });
+    next();
+});
 
 // parse application/json
 app.use(bodyParser.json());
