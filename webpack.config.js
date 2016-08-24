@@ -19,9 +19,9 @@ module.exports = {
     // The configuration for the server-side rendering
     name: 'server',
     target: 'node',
-    entry: './app.js',
+    entry: './server.js',
     output: {
-        filename: 'app-webpack.js'
+        filename: 'server-webpack.js'
     },
     externals: nodeModules,
     module: {
@@ -39,6 +39,9 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.NoErrorsPlugin(),
+        new webpack.DefinePlugin({
+            NODE_ENV: JSON.stringify(NODE_ENV),
+        }),
     ]
 };
 

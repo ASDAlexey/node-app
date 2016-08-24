@@ -5,9 +5,10 @@
   "main": "app.js",
   "scripts": {
     "clean": "rimraf dist",
-    "start": "node app.js",
-    "nodemon": "nodemon -L app.js",
-    "nodemon-webpack-server": "nodemon -L app-webpack.js",
+    "start": "node index",
+    "nodemon": "nodemon -L index.js",
+    "nodemon-webpack-server": "nodemon -L server-webpack.js",
+    "build:server": "env NODE_ENV=production webpack",
     "build:test": "env NODE_ENV=development webpack",
     "build:prod": "env NODE_ENV=production webpack"
   },
