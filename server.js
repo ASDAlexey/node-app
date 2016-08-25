@@ -1,13 +1,16 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import engines from 'consolidate';
+
 const app = express();
 const port = process.env.PORT || 8080;
 
 app.set('views', './src/views');
-app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
+app.engine('pug', engines.pug);
 app.use(express.static('public'));
-app.use(morgan('combined'));
+app.use(morgan('short'));
 app.use(function (req, res, next) {
     var start = Date.now();
     res.on('finish', function () {
@@ -40,10 +43,13 @@ const adminRouter = require('./src/routes/adminRoutes')(nav);
 app.use('/books', bookRouter);
 app.use('/admin', adminRouter);
 
+// app.get('/', (req, res) => {
+//     res.render('index', {
+//         nav,
+//     });
+// });
 app.get('/', (req, res) => {
-    res.render('index', {
-        nav,
-    });
+    res.render('index', { title: 'Hey', message: 'Hello there!' });
 });
 
 app.listen(port, (err) => {

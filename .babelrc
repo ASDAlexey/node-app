@@ -4,9 +4,14 @@
     "react",
     "react-optimize"
   ],
-  "plugins": [
-    "transform-react-constant-elements",
-    "transform-react-inline-elements",
-    "transform-react-remove-prop-types"
-  ]
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-react-remove-prop-types",
+        "transform-runtime",
+        "transform-react-constant-elements",
+        "transform-react-inline-elements"
+      ]
+    }
+  }
 }
